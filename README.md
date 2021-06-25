@@ -2,15 +2,19 @@
 
 Problems will be submitted here and welcome to submit your own solutions and receive the [NFT](https://en.wikipedia.org/wiki/Non-fungible_token)s.
 
-# [Application](#)
+# [Web Application](#)
 
-*EulerDAO* is available on ethereum mainnet and kovan testnet.
+*EulerDAO* is available on ethereum mainnet and kovan testnet. (Switch the network in your wallet to select the network.)
+
+**The project is in beta, use at your own risk.**
 
 - [Problems](#)
 - [Solutions](#)
 - [My Page](#)
 
-# [FAQ](/faq)
+# [Frequently Asked Questions](/faq)
+
+visit to see how *EulerDAO* works.
 
 # [Donation](/donation)
 
