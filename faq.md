@@ -50,6 +50,10 @@ If you have a wonderful idea, welcome to submit issues or pull requests on [Prob
 
 Forum is not provided but you can still discuss under the issue of [Problems](https://github.com/EulerDAO/problems) and submit your solutions on [Solutions](https://github.com/EulerDAO/solutions) or verify your solution contract on [Etherscan](https://etherscan.io/).
 
+# Is *EularDAO* open source?
+
+All the source code of *EularDAO* is transparent and open source on [EulerDAO](https://github.com/EulerDAO).
+
 # How can I contact *EularDAO*?
 
 Just submit issues on [Github](https://github.com/EulerDAO).
