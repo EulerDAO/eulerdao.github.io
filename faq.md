@@ -48,6 +48,4 @@ No. *EulerDAO* is a non-profit project and any donations are gratefully received
 
 # Can I make a donation?
 
-Sure! *EulerDAO* is a non-profit project and your donation can help a lot for the maintainance. Any donations are gratefully received. The receiver for crypto coins are:
-
-- ETH (and other ERC20 tokens): `0x4C2b903d390c527B7Ab486261131F5DD4B9f68C6`
+Sure! For more infomation, see [donation](/donation).

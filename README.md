@@ -1,18 +1,17 @@
-***EulerDAO* is an on-chain competiton and sharing project for mathematics and algorithms, as well as coding skills.
-Problems will be submitted on *EulerDAO*. Warriors can submit their own solutions and they will receive [NFT](https://en.wikipedia.org/wiki/Non-fungible_token)s for their solution.**
+***EulerDAO*** is an **on-chain** **competiton** and **sharing** project for **mathematics** and **algorithms**, as well as **coding skills**.
 
-# Application
+Problems will be submitted here and welcome to submit your own solutions and receive the [NFT](https://en.wikipedia.org/wiki/Non-fungible_token)s.
 
-## [Problems](#)
+# [Application](#)
 
-view problems
+*EulerDAO* is available on ethereum mainnet and kovan testnet.
 
-## [Solutions](#)
+- [Problems](#)
+- [Solutions](#)
+- [My Page](#)
 
-view solutions
+# [FAQ](/faq)
 
-## [My Page](#)
+# [Donation](/donation)
 
-view my records
-
-# [FAQ](/FAQ)
+*EulerDAO* is a non-profit project and your donation can help its maintainance. Any donations are gratefully received.
