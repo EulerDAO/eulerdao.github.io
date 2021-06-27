@@ -24,6 +24,7 @@ class Wallet {
             if (accounts.length === 0) {
                 await this.web3Modal.clearCachedProvider();
                 this.signer = null;
+                await this.render(obj);
                 return
             }
             const provider = new window.ethers.providers.Web3Provider(web3provider);
@@ -55,8 +56,8 @@ class Wallet {
         const address = await this.signer.getAddress();
         const chainid = await this.signer.getChainId();
         const network = window.ethers.providers.getNetwork(chainid);
-        obj.innerText = `${network.name === 'homestead'? '':network.name+' - '}${address}`;
-        obj.href = `https://${network.name === 'homestead'? '':network.name+'.'}etherscan.io/address/${address}`
+        obj.innerText = `${network.name === 'homestead' ? '' : network.name + ' - '}${address}`;
+        obj.href = `https://${network.name === 'homestead' ? '' : network.name + '.'}etherscan.io/address/${address}`
         obj.target = '_blank';
     }
 }
