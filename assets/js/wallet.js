@@ -15,7 +15,7 @@ class Wallet {
         this.signer = null;
     }
 
-    async click(obj) {
+    async click() {
         if (this.signer !== null) {
             return
         }
@@ -24,31 +24,32 @@ class Wallet {
             if (accounts.length === 0) {
                 await this.web3Modal.clearCachedProvider();
                 this.signer = null;
-                await this.render(obj);
+                await this.render();
                 return
             }
             const provider = new window.ethers.providers.Web3Provider(web3provider);
             this.signer = await provider.getSigner();
-            await this.render(obj);
+            await this.render();
         });
         web3provider.on("chainChanged", async (chainId) => {
             const provider = new window.ethers.providers.Web3Provider(web3provider);
             this.signer = await provider.getSigner();
-            await this.render(obj);
+            await this.render();
         });
         web3provider.on("disconnect", async (error) => {
             await this.web3Modal.clearCachedProvider();
             this.signer = null;
-            await this.render(obj);
+            await this.render();
         });
         const provider = new window.ethers.providers.Web3Provider(web3provider);
         this.signer = await provider.getSigner();
-        await this.render(obj);
+        await this.render();
     }
 
-    async render(obj) {
+    async render() {
+        const obj = document.getElementById('wallet')
         if (this.signer === null) {
-            obj.innerText = 'Connect Wallet';
+            obj.innerText = 'ConnectWallet';
             obj.href = `javascript:void(0);`
             obj.target = '_self';
             return;
@@ -62,9 +63,12 @@ class Wallet {
     }
 }
 
+
 window.addEventListener('load', () => {
     window.wallet = new Wallet();
-    if (window.wallet.web3Modal.cacheProvider) {
+    if (window.wallet.web3Modal.cachedProvider) {
         window.wallet.click();
+    } else {
+        window.wallet.render();
     }
 })
