@@ -5,13 +5,16 @@
 
 
 .wrapper {
-    width:100%;
-    margin:0 auto;
+    width:auto;
 }
 
 header {
     width:auto;
     float:none;
     position:static;
-    -webkit-font-smoothing:subpixel-antialiased;
+}
+
+section {
+    width:auto;
+    float:none;
 }
