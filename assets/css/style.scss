@@ -3,7 +3,12 @@
 
 @import "{{ site.theme }}";
 
+
 .wrapper {
     width:100%;
     margin:0 auto;
-  }
+}
+
+header {
+    -webkit-font-smoothing:subpixel-antialiased;
+}
