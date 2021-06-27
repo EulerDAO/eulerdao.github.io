@@ -62,4 +62,9 @@ class Wallet {
     }
 }
 
-window.wallet = new Wallet();
+window.addEventListener('load', () => {
+    window.wallet = new Wallet();
+    if (window.wallet.web3Modal.cacheProvider) {
+        window.wallet.click();
+    }
+})
