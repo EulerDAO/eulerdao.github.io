@@ -8,7 +8,7 @@ class Problem {
         obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
     }
     refine(event) {
-        var bytecode = event.target.value;
+        var bytecode = event.clipboardData.getData('text');
         try {
             console.log(bytecode)
             bytecode = JSON.parse(bytecode).object;
