@@ -18,7 +18,7 @@ Yes.
 
 Submitted solutions are public to everyone. The compiled solutions are all fetchable but not their source code if their authors didn't publish the source code.
 
-The exact same solutions cannot be submitted twice because the hash of the compiled code is locked once submitted. Of course, you can modify the solution a bit or just append some meaningless code to it and then submit it successfully.
+The exact same solution cannot be submitted twice because the hash of the compiled code is locked once submitted. Of course, you can modify the solution a bit or just append some meaningless code to it and then submit it successfully.
 
 The winner of a competiton is the lowest gas usage solution and if the gas usages for two solutions are the same, the earlier one will be chosen.
 
