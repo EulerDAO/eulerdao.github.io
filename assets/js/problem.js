@@ -1,6 +1,7 @@
 class Problem {
     constructor() {
-        console.log('hi babe')
+        this.args = new URLSearchParams(window.location.search);
+        document.getElementById('content').src = `/problems/${this.args.get('id')}`
     }
 }
 
