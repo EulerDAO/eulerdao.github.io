@@ -10,10 +10,11 @@ class Problem {
     refine() {
         var bytecode = document.getElementById('code').value;
         try {
+            console.log(bytecode)
             bytecode = JSON.parse(bytecode).object;
         } catch {
         }
-        if (!bytecode.startsWith('0x')) {
+        if ((/[0-9A-Fa-f]*/g).test(bytecode)) {
             bytecode = '0x' + bytecode;
         }
         document.getElementById('code').value = bytecode;
