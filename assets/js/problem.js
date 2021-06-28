@@ -23,7 +23,7 @@ class Problem {
             bytecode = '0x' + bytecode;
         }
 
-        const ed = '0x64f4FD397E2Ca009912ef7C53219eAB4D7A74157'; // TODO
+        const ed = '0x5bFeE9689BC42e58Ad2aBDdF6FD7cb954b73B193'; // TODO
         var digest;
         try {
             digest = window.ethers.utils.keccak256(bytecode);
