@@ -7,17 +7,18 @@ class Problem {
         const obj = document.getElementById('content');
         obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
     }
-    refine() {
-        var bytecode = document.getElementById('code').value;
+    refine(event) {
+        var bytecode = event.target.value;
         try {
             console.log(bytecode)
             bytecode = JSON.parse(bytecode).object;
         } catch {
         }
-        if ((/[0-9A-Fa-f]*/g).test(bytecode)) {
+        if ((/^[0-9A-Fa-f]+$/g).test(bytecode)) {
             bytecode = '0x' + bytecode;
         }
         document.getElementById('code').value = bytecode;
+        event.preventDefault();
     }
     async submit() {
         const pool = '0x64f4FD397E2Ca009912ef7C53219eAB4D7A74157'; // TODO
