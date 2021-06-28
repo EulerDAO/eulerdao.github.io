@@ -1,7 +1,7 @@
 class Problem {
     constructor() {
         this.args = new URLSearchParams(window.location.search);
-        document.getElementById('content').src = `/problems/data/${this.args.get('id')}/`
+        document.getElementById('content').src = `/problems/${this.args.get('id')}`
         document.getElementById('submit').href = `/submit?id=${this.args.get('id')}`
     }
     resize() {
