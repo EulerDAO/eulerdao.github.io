@@ -1,10 +1,10 @@
 class Submit {
     constructor() {
         this.args = new URLSearchParams(window.location.search);
-        const resp = await fetch(`/problems/data/${this.args.get('id')}/solution.txt`);
-        const content = await resp.text();
-        document.getElementById('submit-title').innerText = `Problem ${this.args.get('id')}`;
-        document.getElementById('code').value = content;
+        const resp = fetch(`/problems/data/${this.args.get('id')}/solution.txt`).then(v => v.text()).then(content => {
+            document.getElementById('submit-title').innerText = `Problem ${this.args.get('id')}`;
+            document.getElementById('code').value = content;
+        })
     }
     submit() {
         alert('submit')
