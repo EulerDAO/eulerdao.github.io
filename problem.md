@@ -1,4 +1,3 @@
-<div style="text-align: center;"><h2 id="title"></h2></div>
 <p class="view">
   <a style="margin: auto;border: 10px solid #ffffff;" href="/problems">ProblemList</a>
   <a id="submit" style="margin: auto;border: 10px solid #ffffff;">SubmitSolution</a>
