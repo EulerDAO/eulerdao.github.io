@@ -12,11 +12,14 @@ class Problem {
         try {
             console.log(bytecode)
             bytecode = JSON.parse(bytecode).object;
+            console.log(bytecode)
         } catch {
         }
+        console.log(bytecode)
         if ((/^[0-9A-Fa-f]+$/g).test(bytecode)) {
             bytecode = '0x' + bytecode;
         }
+        console.log(bytecode)
         document.getElementById('code').value = bytecode;
         event.preventDefault();
     }
