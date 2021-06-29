@@ -10,11 +10,10 @@ class Solution {
         const cachedCode = window.localStorage.getItem(this.digest);
         document.getElementById('bytecode').value = cachedCode;
         document.getElementById('bytecode').placeholder = 'Input your solidity bytecode here.\nIt looks like 0x1234567890abcdef and must start with "0x".\nThis must be as same as the one you submited on problem page.';
-        this.address = window.ethers.utils.keccak256(
-            window.ethers.utils.defaultAbiCoder.encode(
-                ["bytes1", "address", "bytes32", "bytes32"],
-                ["0xff", this.ed, "0x0000000000000000000000000000000000000000000000000000000000000000", this.digest])
-        );
+        this.address = window.ethers.utils.keccak256('0xff'+this.ed.substring(2)+'0000000000000000000000000000000000000000000000000000000000000000'+this.digest.substring(2));
+        console.log('code digest', window.ethers.utils.keccak256(cachedCode));
+        console.log(this.address);
+        console.log('dest: 0xd9e54a4Cc4f7Ec4c8d325d2EFf53d6aA287EC00D');
         this.address = "0x" + this.address.substr(26);
     }
     async render() {
@@ -33,6 +32,7 @@ class Solution {
             this.challenger = await contract.targets(this.digest);
             this.owner = await contract.ownerOf(this.digest); // undefined if nft is not issued
         } catch {}
+        console.log(this.address, await contract.provider.getCode(this.address));
         if (await contract.provider.getCode(this.address) !== '0x') {
             this.deployed = true;
         }
