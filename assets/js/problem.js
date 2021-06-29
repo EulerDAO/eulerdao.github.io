@@ -35,7 +35,7 @@ class Problem {
             return;
         } catch {
         }
-        const tx = await contract.lock_solution(target, digest);
+        const tx = await contract.lock_solution(digest, target);
         window.localStorage.setItem(digest, bytecode);
         await tx.wait()
         window.open(`/solution?id=${digest}`, '_blank');

@@ -30,9 +30,11 @@ class Solution {
             this.score = await contract.targets(this.digest);
             this.timestamp = await contract.targets(this.digest);
             this.challenger = await contract.targets(this.digest);
+            console.log('digest', this.digest);
             this.owner = await contract.ownerOf(this.digest); // undefined if nft is not issued
         } catch(e) {console.log('==========');console.log(e)}
-        console.log(this.address, await contract.provider.getCode(this.address));
+        console.log('address', this.address);
+        console.log('owner', this.owner);
         if (await contract.provider.getCode(this.address) !== '0x') {
             this.deployed = true;
         }
