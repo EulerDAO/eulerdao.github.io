@@ -4,13 +4,14 @@
 <a id='etherscan' style="display: block; text-align: center; visibility: hidden">View in etherum</a>
 
 <div id='noenter' style="visibility: hidden">
-    <h3>Not Entered</h3>
+    <h3  style="display: block; text-align: center">Not Entered</h3>
+    <a id='compete' style="display: block; text-align: center">Compete</a>
 </div>
 <div id='entered' style="visibility: hidden">
     <h3>Entered</h3>
-    <h3 id='score'>Score: x</h3>
-    <h3 id='rank' style="visibility: hidden">Rank: x</h3>
-    <h3 id='challenger' style="visibility: hidden">Challenger: x</h3>
+    <h3 id='score'  style="display: block; text-align: center">Score: x</h3>
+    <h3 id='rank' style="display: block; text-align: center; visibility: hidden">Rank: x</h3>
+    <h3 id='challenger' style="display: block; text-align: center; visibility: hidden">Challenger: x</h3>
     <a id='lock' style="display: block; text-align: center" style="visibility: hidden" >Lock</a>
 </div>
 <script src="/assets/js/solution.js"></script>

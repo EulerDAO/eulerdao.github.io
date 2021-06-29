@@ -48,6 +48,12 @@ class Solution {
             document.getElementById('problem').href = `/problems/${this.target}`;
             document.getElementById('problem').style.visibility = 'visible';
         }
+
+        if (this.score > 0) {
+            document.getElementById('entered').style.visibility = 'visible';
+        } else {
+            document.getElementById('noenter').style.visibility = 'visible';
+        }
     }
 }
 
