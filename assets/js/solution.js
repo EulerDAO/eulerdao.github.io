@@ -37,26 +37,44 @@ class Solution {
             this.deployed = true;
         }
 
-        // etherscan view or submit code
-        if (this.deployed) {
-            const chainid = await window.wallet.signer.getChainId();
-            const network = window.ethers.providers.getNetwork(chainid);
-            document.getElementById('etherscan').href = `https://${network.name === 'homestead' ? '' : network.name + '.'}etherscan.io/address/${this.address}`
-            document.getElementById('etherscan').style.visibility = 'visible';
-        } else {
-            document.getElementById('submitcode').style.visibility = 'visible';
-        }
-
         if (this.owner !== undefined) {
             document.getElementById('problem').href = `/problems/${this.target}`;
             document.getElementById('problem').style.visibility = 'visible';
         }
 
+        // etherscan view or submit code
+        if (!this.deployed) {
+            document.getElementById('submitcode').style.visibility = 'visible';
+            return;
+        }
+
+        const chainid = await window.wallet.signer.getChainId();
+        const network = window.ethers.providers.getNetwork(chainid);
+        document.getElementById('etherscan').href = `https://${network.name === 'homestead' ? '' : network.name + '.'}etherscan.io/address/${this.address}`
+        document.getElementById('etherscan').style.visibility = 'visible';
+
         // entered or not not entered
-        if (this.score > 0) {
-            document.getElementById('entered').style.visibility = 'visible';
-        } else {
+        if (this.score === 0) {
             document.getElementById('noenter').style.visibility = 'visible';
+            return;
+        }
+        document.getElementById('entered').style.visibility = 'visible';
+        document.getElementById('showscore').innerText = `Score: ${this.score}`
+
+        // has challenger or not
+        if (this.challenger !== window.signer.address) {
+            document.getElementById('lock').style.visibility = 'visible';
+            if (this.challenger === this.owner) {
+                document.getElementById('lock').innerText = 'prepare to revoke'
+            } else {
+                document.getElementById('lock').innerText = 'to be the challenger'
+            }
+        } else {
+            if (this.challenger === this.owner) {
+                document.getElementById('challenge').style.visibility = 'visible';
+            } else {
+                document.getElementById('revoke').style.visibility = 'visible';
+            }
         }
     }
     async compete() {
@@ -64,7 +82,7 @@ class Solution {
             'function compete(uint256 id, uint256 score) external payable',
         ]
         const contract = new window.ethers.Contract(this.ed, abi, window.wallet.signer);
-        const score =  document.getElementById('score').value;
+        const score = document.getElementById('score').value;
         await contract.compete(this.digest, score);
     }
     async submit_code() {
@@ -72,9 +90,30 @@ class Solution {
             'function submit_code(bytes memory code) external',
         ]
         const contract = new window.ethers.Contract(this.ed, abi, window.wallet.signer);
-        const bytecode =  document.getElementById('bytecode').value;
+        const bytecode = document.getElementById('bytecode').value;
         //TODO verify hash is digest
         await contract.submit_code(bytecode);
+    }
+    async lock() {
+        const abi = [
+            'function lock_challenge(uint256 id) public payable',
+        ]
+        const contract = new window.ethers.Contract(this.ed, abi, window.wallet.signer);
+        await contract.lock_challenge(this.digest, {value: '2000000000000000000'});
+    }
+    async challenge() {
+        const abi = [
+            'function challenge(uint256 id, bytes calldata i) external payable',
+        ]
+        const contract = new window.ethers.Contract(this.ed, abi, window.wallet.signer);
+        await contract.challenge(this.digest, '0x11');
+    }
+    async revoke() {
+        const abi = [
+            'function revoke(uint256 id) external payable ',
+        ]
+        const contract = new window.ethers.Contract(this.ed, abi, window.wallet.signer);
+        await contract.revoke(this.digest);
     }
 }
 
