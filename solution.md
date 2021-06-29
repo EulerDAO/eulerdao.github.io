@@ -6,11 +6,11 @@
 
 <div id='noenter' style="visibility: hidden">
     <h3  style="display: block; text-align: center">Not Entered</h3>
-    <label>Your Score:</label><input id='score' />
+    <label >Your Score:</label><input id='score' />
     <a id='compete' onclick='window.solution.compete()' style="display: block; text-align: center">Compete</a>
 </div>
 <div id='entered' style="visibility: hidden">
-    <h3>Entered</h3>
+    <h3 style="display: block; text-align: center">Entered</h3>
     <h3 id='showscore'  style="display: block; text-align: center">Score: x</h3>
     <h3 id='rank' style="display: block; text-align: center; visibility: hidden">Rank: x</h3>
     <h3 id='challenger' style="display: block; text-align: center; visibility: hidden">Challenger: x</h3>

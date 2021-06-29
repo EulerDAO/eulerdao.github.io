@@ -22,7 +22,7 @@ class Solution {
             'function scores(uint256) external view returns(uint256)',
             'function timestamps(uint256) external view returns(uint256)',
             'function challengers(uint256) external view returns(uint256)',
-            'function ownerOf(uint256 id) external view returns (address)',
+            'function ownerOf(uint256) external view returns (address)',
         ]
         const contract = new window.ethers.Contract(this.ed, abi, window.wallet.signer);
         try {
@@ -31,7 +31,7 @@ class Solution {
             this.timestamp = await contract.targets(this.digest);
             this.challenger = await contract.targets(this.digest);
             this.owner = await contract.ownerOf(this.digest); // undefined if nft is not issued
-        } catch {}
+        } catch(e) {console.log('==========');console.log(e)}
         console.log(this.address, await contract.provider.getCode(this.address));
         if (await contract.provider.getCode(this.address) !== '0x') {
             this.deployed = true;
@@ -54,7 +54,7 @@ class Solution {
         document.getElementById('etherscan').style.visibility = 'visible';
 
         // entered or not not entered
-        if (this.score === 0) {
+        if (this.score == 0) {
             document.getElementById('noenter').style.visibility = 'visible';
             return;
         }
@@ -83,7 +83,8 @@ class Solution {
         ]
         const contract = new window.ethers.Contract(this.ed, abi, window.wallet.signer);
         const score = document.getElementById('score').value;
-        await contract.compete(this.digest, score);
+        console.log('owner', this.owner);
+        await contract.compete(this.digest, score, {value: '2000000000000000000'});
     }
     async submit_code() {
         const abi = [
@@ -99,7 +100,7 @@ class Solution {
             'function lock_challenge(uint256 id) public payable',
         ]
         const contract = new window.ethers.Contract(this.ed, abi, window.wallet.signer);
-        await contract.lock_challenge(this.digest, {value: '2000000000000000000'});
+        await contract.lock_challenge(this.digest);
     }
     async challenge() {
         const abi = [
