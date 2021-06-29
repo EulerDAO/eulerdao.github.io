@@ -13,7 +13,7 @@ class Problem {
             alert("Connect wallect first!");
             return;
         }
-        const contract = new window.ethers.Contract('0xC3a65484e3D59689B318fB23c210a079873CFfbB', ['function lock_challenge(uint256 id) external payable', 'function ownerOf(uint256 id) external view returns (address)', 'function problems(uint256) returns (address)'], signer);
+        const contract = new window.ethers.Contract('0xC3a65484e3D59689B318fB23c210a079873CFfbB', ['function lock_solution(uint256, uint256) external payable', 'function ownerOf(uint256) external view returns (address)', 'function problems(uint256) external view returns (address)'], signer);
         const target = this.args.get('id');
         try {
             await contract.problems(target);
