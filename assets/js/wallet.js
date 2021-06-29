@@ -60,6 +60,9 @@ class Wallet {
         obj.innerText = `${network.name === 'homestead' ? '' : network.name + ':'}${address}`;
         obj.href = `https://${network.name === 'homestead' ? '' : network.name + '.'}etherscan.io/address/${address}`
         obj.target = '_blank';
+
+        const event = new Event('connect');
+        window.dispatchEvent(event);
     }
 }
 

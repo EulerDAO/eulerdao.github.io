@@ -3,8 +3,6 @@ class Problem {
         this.args = new URLSearchParams(window.location.search);
         const target = this.args.get('id');
         document.getElementById('content').src = `/problems/${target}`;
-        const cachedCode = window.localStorage.getItem(target);
-        document.getElementById('code').value = cachedCode;
         document.getElementById('code').placeholder = 'Input your solidity bytecode here.\nIt looks like 0x1234567890abcdef and must start with "0x".\nYou can compile your solidity in remix or local machine.';
     }
     resize() {
@@ -52,7 +50,7 @@ class Problem {
         }
 
         contract.lock_challenge(digest).then(async (r) => {
-            window.localStorage.setItem(target, bytecode);
+            window.localStorage.setItem(digest, bytecode);
             await r.wait();
             window.open(`/solution?id=${digest}`, '_blank');
         }).catch(
