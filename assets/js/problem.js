@@ -1,7 +1,7 @@
 class Problem {
     constructor() {
         this.args = new URLSearchParams(window.location.search);
-        document.getElementById('content').src = `/problems/${this.args.get('id')}`
+        document.getElementById('content').src = `/problems/${this.args.get('id')}`;
     }
     resize() {
         const obj = document.getElementById('content');
@@ -13,29 +13,31 @@ class Problem {
             alert("Connect wallect first!");
             return;
         }
-
-        let bytecode = document.getElementById('code').value;
+        const contract = new window.ethers.Contract('0xC3a65484e3D59689B318fB23c210a079873CFfbB', ['function lock_challenge(uint256 id) external payable', 'function ownerOf(uint256 id) external view returns (address)', 'function problems(uint256) returns (address)'], signer);
+        const target = this.args.get('id');
         try {
-            bytecode = JSON.parse(bytecode).object;
+            await contract.problems(target);
         } catch {
+            alert('problem not exist');
+            return;
         }
-        if ((/^[0-9A-Fa-f]+$/g).test(bytecode)) {
-            bytecode = '0x' + bytecode;
-        }
-
-        const ed = '0x5bFeE9689BC42e58Ad2aBDdF6FD7cb954b73B193'; // TODO
-        var digest;
+        const bytecode = document.getElementById('code').value;
+        let digest;
         try {
             digest = window.ethers.utils.keccak256(bytecode);
         } catch {
             alert('invald bytecode')
             return;
         }
-        const abi = [
-            'function lock_challenge(uint256 id) public payable',
-        ]
-        const contract = new window.ethers.Contract(ed, abi, signer);
-        await contract.lock_challenge(digest);
+        try {
+            await contract.ownerOf(digest);
+            window.open(`/solution?id=${digest}`, '_blank');
+            return;
+        } catch {
+        }
+        const tx = await contract.lock_solution(target, digest);
+        window.localStorage.setItem(digest, bytecode);
+        await tx.wait()
         window.open(`/solution?id=${digest}`, '_blank');
     }
 }
