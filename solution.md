@@ -14,8 +14,8 @@
     <h3 id='showscore'  style="display: block; text-align: center">Score: x</h3>
     <h3 id='rank' style="display: block; text-align: center; visibility: hidden">Rank: x</h3>
     <h3 id='challenger' style="display: block; text-align: center; visibility: hidden">Challenger: x</h3>
-    <a id='lock' onclick='window.solution.lock()' style="display: block; text-align: center" style="visibility: hidden" >Lock</a>
-    <a id='challenge' onclick='window.solution.challenge()' style="display: block; text-align: center" style="visibility: hidden" >Challenge</a>
-    <a id='revoke' onclick='window.solution.revoke()' style="display: block; text-align: center" style="visibility: hidden" >Revoke</a>
+    <a id='lock' onclick='window.solution.lock()' style="display: block; text-align: center; visibility: hidden" >Lock</a>
+    <a id='challenge' onclick='window.solution.challenge()' style="display: block; text-align: center;visibility: hidden"  >Challenge</a>
+    <a id='revoke' onclick='window.solution.revoke()' style="display: block; text-align: center;visibility: hidden" >Revoke</a>
 </div>
 <script src="/assets/js/solution.js"></script>

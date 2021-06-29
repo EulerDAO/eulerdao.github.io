@@ -27,12 +27,16 @@ class Solution {
         const contract = new window.ethers.Contract(this.ed, abi, window.wallet.signer);
         try {
             this.target = await contract.targets(this.digest);
-            this.score = await contract.targets(this.digest);
-            this.timestamp = await contract.targets(this.digest);
-            this.challenger = await contract.targets(this.digest);
-            console.log('digest', this.digest);
+            this.score = await contract.scores(this.digest);
+            this.timestamp = await contract.timestamps(this.digest);
+            this.challenger = await contract.challengers(this.digest);
             this.owner = await contract.ownerOf(this.digest); // undefined if nft is not issued
         } catch(e) {console.log('==========');console.log(e)}
+        console.log('digest', this.digest);
+        console.log('target', this.target);
+        console.log('score', this.score);
+        console.log('timestamp', this.timestamp);
+        console.log('challenger', this.challenger);
         console.log('address', this.address);
         console.log('owner', this.owner);
         if (await contract.provider.getCode(this.address) !== '0x') {
@@ -64,18 +68,19 @@ class Solution {
         document.getElementById('showscore').innerText = `Score: ${this.score}`
 
         // has challenger or not
-        if (this.challenger !== window.signer.address) {
+        const thisAddr = await window.wallet.signer.getAddress();
+        if (!this.challenger.eq(window.ethers.BigNumber.from(thisAddr))) {
             document.getElementById('lock').style.visibility = 'visible';
-            if (this.challenger === this.owner) {
+            if (thisAddr === this.owner) {
                 document.getElementById('lock').innerText = 'prepare to revoke'
             } else {
                 document.getElementById('lock').innerText = 'to be the challenger'
             }
         } else {
-            if (this.challenger === this.owner) {
-                document.getElementById('challenge').style.visibility = 'visible';
-            } else {
+            if (thisAddr == this.owner) {
                 document.getElementById('revoke').style.visibility = 'visible';
+            } else {
+                document.getElementById('challenge').style.visibility = 'visible';
             }
         }
     }
