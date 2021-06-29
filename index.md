@@ -1,11 +1,11 @@
-# [Web Application](#)
+# [Web Application](/list?data=problem)
 
 *EulerDAO* is available on ethereum mainnet and kovan testnet. (Switch the network in your wallet to select the network.)
 
 **The project is in beta, use at your own risk.**
 
-- [Problems](#)
-- [Solutions](#)
+- [Problems](/list?data=problem)
+- [Solutions](/list?data=solution)
 - [My Page](#)
 
 # [Frequently Asked Questions](/faq)
