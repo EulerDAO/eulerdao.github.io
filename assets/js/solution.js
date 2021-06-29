@@ -37,23 +37,44 @@ class Solution {
             this.deployed = true;
         }
 
-        // etherscan href
+        // etherscan view or submit code
         if (this.deployed) {
             const chainid = await window.wallet.signer.getChainId();
             const network = window.ethers.providers.getNetwork(chainid);
             document.getElementById('etherscan').href = `https://${network.name === 'homestead' ? '' : network.name + '.'}etherscan.io/address/${this.address}`
             document.getElementById('etherscan').style.visibility = 'visible';
+        } else {
+            document.getElementById('submitcode').style.visibility = 'visible';
         }
+
         if (this.owner !== undefined) {
             document.getElementById('problem').href = `/problems/${this.target}`;
             document.getElementById('problem').style.visibility = 'visible';
         }
 
+        // entered or not not entered
         if (this.score > 0) {
             document.getElementById('entered').style.visibility = 'visible';
         } else {
             document.getElementById('noenter').style.visibility = 'visible';
         }
+    }
+    async compete() {
+        const abi = [
+            'function compete(uint256 id, uint256 score) external payable',
+        ]
+        const contract = new window.ethers.Contract(this.ed, abi, window.wallet.signer);
+        const score =  document.getElementById('score').value;
+        await contract.compete(this.digest, score);
+    }
+    async submit_code() {
+        const abi = [
+            'function submit_code(bytes memory code) external',
+        ]
+        const contract = new window.ethers.Contract(this.ed, abi, window.wallet.signer);
+        const bytecode =  document.getElementById('bytecode').value;
+        //TODO verify hash is digest
+        await contract.submit_code(bytecode);
     }
 }
 
