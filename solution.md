@@ -1,8 +1,6 @@
-<div id="code"></div>
+<div id="code">Loading ...</div>
 <hr>
-<a id='problem' style="display: block; text-align: center; visibility: hidden">Back to problem</a>
-<a id='etherscan' style="display: block; text-align: center; visibility: hidden">View in etherum</a>
-<a id='submitcode' onclick='window.solution.submit_code()' style="display: block; text-align: center; visibility: hidden">Submit your code</a>
+<a id='problem' style="display: block; text-align: center; visibility: hidden">Back to Problem</a>
 
 <div id='noenter' style="visibility: hidden">
     <h3  style="display: block; text-align: center">Not Entered</h3>
