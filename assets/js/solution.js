@@ -80,6 +80,7 @@ class Solution {
                 const a = document.createElement('a');
                 a.innerText = address
                 a.style.textAlign = 'center';
+                a.style.display = 'block';
                 a.href = `https://${network.name === 'homestead' ? '' : network.name + '.'}etherscan.io/address/${address}#code`
                 document.getElementById('code').appendChild(a);
                 break;
