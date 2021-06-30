@@ -8,7 +8,7 @@ class Problem {
         obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
     }
     async submit() {
-        if (window.wallet.signer === null) {
+        if (!window.wallet.signer) {
             alert("Connect wallect first!");
             return;
         }
