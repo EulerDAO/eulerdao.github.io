@@ -30,7 +30,7 @@ class Solution {
             ctx.code = await contract.provider.getCode(address);
         } catch { }
 
-        if (this.owner === undefined) {
+        if (ctx.owner === undefined) {
             document.getElementById('code').innerText = 'Solution not Found';
             return;
         }
