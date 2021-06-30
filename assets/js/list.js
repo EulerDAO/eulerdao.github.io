@@ -8,7 +8,7 @@ class List {
             case 'problem':
                 const resp = await fetch('https://eulerdao.github.io/cache.ropsten/CountProblems.json')
                 const num = await resp.json();
-                Array(num).keys().forEach(async v => {
+                [...Array(num).keys()].forEach(async v => {
                     const resp = await fetch(`https://eulerdao.github.io/problems/${v}.md`)
                     const text = await resp.text();
                     const title = text.split('\n')[0].substring(2);
