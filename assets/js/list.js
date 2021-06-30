@@ -2,7 +2,7 @@ class List {
     constructor() {
         this.args = new URLSearchParams(window.location.search);
     }
-    render() {
+    async render() {
         const obj = document.getElementById('content');
         switch (this.args.get('data')) {
             case 'problem':
