@@ -30,7 +30,7 @@ class Solution {
             ctx.code = await contract.provider.getCode(address);
         } catch { }
 
-        switch (code) {
+        switch (ctx.code) {
             case '0x':
                 document.getElementById('code').innerHTML = '';
                 const textarea = document.createElement('textarea');
@@ -49,9 +49,12 @@ class Solution {
                 document.getElementById('code').innerHTML = '';
                 const chainid = await window.wallet.signer.getChainId();
                 const network = window.ethers.providers.getNetwork(chainid);
+                const h1 = document.createElement('h1');
+                h1.innerText = 'Solution is deployed!';
+                document.getElementById('code').appendChild(h1);
                 const a = document.createElement('a');
-                a.innerText = `Solution is deployed at ${address}`;
-                a.href = `https://${network.name === 'homestead' ? '' : network.name + '.'}etherscan.io/address/${address}`
+                a.innerText = address
+                a.href = `https://${network.name === 'homestead' ? '' : network.name + '.'}etherscan.io/address/${address}#code`
                 document.getElementById('code').appendChild(a);
                 break;
         }
