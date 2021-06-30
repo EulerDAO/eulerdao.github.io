@@ -1,2 +1,2 @@
 <ul id="content"></ul>
-<script src="/assets/js/problems.js"></script>
+<script src="/assets/js/list.js"></script>
