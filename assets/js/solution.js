@@ -61,7 +61,7 @@ class Solution {
                 document.getElementById('score').innerText = `❌[NO SCORE]`;
             }
         } else {
-            document.getElementById('td-score').innerText = `✔️[${ctx.score}]`;
+            document.getElementById('score').innerText = `✔️[${ctx.score}]`;
         }
         {
             const a = document.createElement('a');
