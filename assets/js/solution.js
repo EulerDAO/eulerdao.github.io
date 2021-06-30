@@ -37,6 +37,13 @@ class Solution {
 
         document.getElementById('problem').href = `/problem?id=${ctx.target}`;
         document.getElementById('problem').style.visibility = 'visible';
+        document.getElementById('td-score').innerText = ctx.score;
+        document.getElementById('td-owner').innerText = ctx.owner;
+        document.getElementById('td-challenger').innerText = ctx.challenger;
+        console.log(ctx.timestamp.toNumber(), typeof(ctx.timestamp));
+        document.getElementById('td-timestamp').innerText = new Date(ctx.timestamp.toNumber()*1000).toLocaleString();
+        document.getElementById('info').style.visibility = 'visible';
+
 
         switch (ctx.code) {
             case '0x':
@@ -86,27 +93,26 @@ class Solution {
                 break;
         }
 
-        return;
 
         // entered or not not entered
-        if (this.score == 0) {
+        if (ctx.score == 0) {
             document.getElementById('noenter').style.visibility = 'visible';
             return;
         }
         document.getElementById('entered').style.visibility = 'visible';
-        document.getElementById('showscore').innerText = `Score: ${this.score}`
+        document.getElementById('showscore').innerText = `Score: ${ctx.score}`
 
         // has challenger or not
         const thisAddr = await window.wallet.signer.getAddress();
-        if (!this.challenger.eq(window.ethers.BigNumber.from(thisAddr))) {
+        if (!ctx.challenger.eq(window.ethers.BigNumber.from(thisAddr))) {
             document.getElementById('lock').style.visibility = 'visible';
-            if (thisAddr === this.owner) {
+            if (thisAddr === ctx.owner) {
                 document.getElementById('lock').innerText = 'prepare to revoke'
             } else {
                 document.getElementById('lock').innerText = 'to be the challenger'
             }
         } else {
-            if (thisAddr == this.owner) {
+            if (thisAddr == ctx.owner) {
                 document.getElementById('revoke').style.visibility = 'visible';
             } else {
                 document.getElementById('challenge').style.visibility = 'visible';
