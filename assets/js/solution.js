@@ -35,6 +35,9 @@ class Solution {
             return;
         }
 
+        document.getElementById('problem').href = `/problem?id=${ctx.target}`;
+        document.getElementById('problem').style.visibility = 'visible';
+
         switch (ctx.code) {
             case '0x':
                 document.getElementById('code').innerHTML = '';
@@ -78,8 +81,6 @@ class Solution {
                 document.getElementById('code').appendChild(a);
                 break;
         }
-
-        document.getElementById('problem').href = `/problem?id=${ctx.target}`;
 
         return;
 
