@@ -36,6 +36,14 @@ class Solution {
 
         {
             const code = document.createElement('code');
+            switch (true) {
+                case ctx.code == '0x':
+                    code.style.color = 'red';
+                    break
+                case ctx.score.gt(0):
+                    code.style.color = 'green';
+                    break;
+            }
             code.innerText = digest;
             document.getElementById('id').innerHTML = '';
             document.getElementById('id').appendChild(code);
@@ -114,7 +122,6 @@ class Solution {
                 document.getElementById('code').innerHTML = '';
                 const a = document.createElement('a');
                 a.innerText = address
-                a.style.textAlign = 'center';
                 a.style.display = 'block';
                 a.href = `https://${network.name === 'homestead' ? '' : network.name + '.'}etherscan.io/address/${address}#code`
                 document.getElementById('code').appendChild(a);
