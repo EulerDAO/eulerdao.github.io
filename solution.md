@@ -1,5 +1,4 @@
-<textarea id="srccode" style='width: 100%; height: 25vh'></textarea>
-<textarea id="bytecode" style='width: 100%; height: 25vh'></textarea>
+<div id="code"></div>
 <a id='problem' style="display: block; text-align: center; visibility: hidden">Back to problem</a>
 <a id='etherscan' style="display: block; text-align: center; visibility: hidden">View in etherum</a>
 <a id='submitcode' onclick='window.solution.submit_code()' style="display: block; text-align: center; visibility: hidden">Submit your code</a>

@@ -4,14 +4,13 @@ class Solution {
     }
     async render() {
         const digest = this.args.get('id');
-        document.getElementById('bytecode').value = window.localStorage.getItem(digest);
         const payload = `0xff${'C3a65484e3D59689B318fB23c210a079873CFfbB'}0000000000000000000000000000000000000000000000000000000000000000${digest.substring(2)}`;
         const address = `0x${window.ethers.utils.keccak256(payload).substring(26)}`;
         if (window.wallet.signer === null) {
             return;
         }
         const ctx = {};
-        const contract = new window.ethers.Contract('0xC3a65484e3D59689B318fB23c210a079873CFfbB', ['function targets(uint256) external view returns(uint256)', 'function scores(uint256) external view returns(uint256)', 'function timestamps(uint256) external view returns(uint256)', 'function challengers(uint256) external view returns(uint256)', 'function ownerOf(uint256) external view returns (address)'], window.wallet.signer);
+        const contract = new window.ethers.Contract('0xC3a65484e3D59689B318fB23c210a079873CFfbB', ['function targets(uint256) external view returns(uint256)', 'function scores(uint256) external view returns(uint256)', 'function timestamps(uint256) external view returns(uint256)', 'function challengers(uint256) external view returns(address)', 'function ownerOf(uint256) external view returns (address)'], window.wallet.signer);
         try {
             ctx.target = await contract.targets(digest);
         } catch { }
@@ -27,12 +26,37 @@ class Solution {
         try {
             ctx.owner = await contract.ownerOf(digest);
         } catch { }
+        try {
+            ctx.code = await contract.provider.getCode(address);
+        } catch { }
 
-        console.log(ctx);
-        return;
-        if (await contract.provider.getCode(this.address) !== '0x') {
-            this.deployed = true;
+        switch (code) {
+            case '0x':
+                document.getElementById('code').innerHTML = '';
+                const textarea = document.createElement('textarea');
+                textarea.value = window.localStorage.getItem(digest);
+                textarea.style.width = '100%';
+                textarea.style.height = '25vh';
+                textarea.style.placeholder = 'input the compiled bytecode (createcode) starts with 0x';
+                document.getElementById('code').appendChild(textarea);
+                const button = document.createElement('button');
+                button.innerText = 'deploy solution';
+                button.style.width = '100%';
+                button.onclick = () => { alert(1) };
+                document.getElementById('code').appendChild(button);
+                break;
+            default:
+                document.getElementById('code').innerHTML = '';
+                const chainid = await window.wallet.signer.getChainId();
+                const network = window.ethers.providers.getNetwork(chainid);
+                const a = document.createElement('a');
+                a.innerText = `Solution is deployed at ${address}`;
+                a.href = `https://${network.name === 'homestead' ? '' : network.name + '.'}etherscan.io/address/${address}`
+                document.getElementById('code').appendChild(a);
+                break;
         }
+
+        return;
 
         if (this.owner !== undefined) {
             document.getElementById('problem').href = `/problems/${this.target}`;
