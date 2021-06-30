@@ -1,37 +1,25 @@
 class Solution {
     constructor() {
-        this.ed = '0xC3a65484e3D59689B318fB23c210a079873CFfbB'; // TODO
         this.args = new URLSearchParams(window.location.search);
-        this.digest = this.args.get('id');
-        if (this.digest === '' && this.args.get('decimal') !== '') {
-            this.digest = decToHex(this.args.get('decimal'));
-        }
-
-        const cachedCode = window.localStorage.getItem(this.digest);
-        document.getElementById('bytecode').value = cachedCode;
-        document.getElementById('bytecode').placeholder = 'Input your solidity bytecode here.\nIt looks like 0x1234567890abcdef and must start with "0x".\nThis must be as same as the one you submited on problem page.';
-        this.address = window.ethers.utils.keccak256('0xff'+this.ed.substring(2)+'0000000000000000000000000000000000000000000000000000000000000000'+this.digest.substring(2));
-        console.log('code digest', window.ethers.utils.keccak256(cachedCode));
-        console.log(this.address);
-        console.log('dest: 0xd9e54a4Cc4f7Ec4c8d325d2EFf53d6aA287EC00D');
-        this.address = "0x" + this.address.substr(26);
     }
     async render() {
-        const abi = [
-            'function targets(uint256) external view returns(uint256)',
-            'function scores(uint256) external view returns(uint256)',
-            'function timestamps(uint256) external view returns(uint256)',
-            'function challengers(uint256) external view returns(uint256)',
-            'function ownerOf(uint256) external view returns (address)',
-        ]
-        const contract = new window.ethers.Contract(this.ed, abi, window.wallet.signer);
+        const digest = this.args.get('id');
+        document.getElementById('bytecode').value = window.localStorage.getItem(digest);
+        const address = window.ethers.utils.keccak256(`0xff${'C3a65484e3D59689B318fB23c210a079873CFfbB'}0000000000000000000000000000000000000000000000000000000000000000${digest.substring(2)}`).substring(26);
+        console.log(address);
+        console.log('dest: 0xd9e54a4Cc4f7Ec4c8d325d2EFf53d6aA287EC00D');
+        return;
+        if (window.wallet.signer === null) {
+            return;
+        }
+        const contract = new window.ethers.Contract('0xC3a65484e3D59689B318fB23c210a079873CFfbB', ['function targets(uint256) external view returns(uint256)', 'function scores(uint256) external view returns(uint256)', 'function timestamps(uint256) external view returns(uint256)', 'function challengers(uint256) external view returns(uint256)', 'function ownerOf(uint256) external view returns (address)'], window.wallet.signer);
         try {
             this.target = await contract.targets(this.digest);
             this.score = await contract.scores(this.digest);
             this.timestamp = await contract.timestamps(this.digest);
             this.challenger = await contract.challengers(this.digest);
             this.owner = await contract.ownerOf(this.digest); // undefined if nft is not issued
-        } catch(e) {console.log('==========');console.log(e)}
+        } catch (e) { console.log('=========='); console.log(e) }
         console.log('digest', this.digest);
         console.log('target', this.target);
         console.log('score', this.score);
@@ -91,7 +79,7 @@ class Solution {
         const contract = new window.ethers.Contract(this.ed, abi, window.wallet.signer);
         const score = document.getElementById('score').value;
         console.log('owner', this.owner);
-        await contract.compete(this.digest, score, {value: '2000000000000000000'});
+        await contract.compete(this.digest, score, { value: '2000000000000000000' });
     }
     async submit_code() {
         const abi = [
@@ -127,6 +115,7 @@ class Solution {
 
 window.addEventListener('load', () => {
     window.solution = new Solution();
+    window.solution.render();
 });
 window.addEventListener('connect', () => {
     window.solution.render();

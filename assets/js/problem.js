@@ -8,12 +8,11 @@ class Problem {
         obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
     }
     async submit() {
-        const signer = window.wallet.signer;
-        if (signer === null) {
+        if (window.wallet.signer === null) {
             alert("Connect wallect first!");
             return;
         }
-        const contract = new window.ethers.Contract('0xC3a65484e3D59689B318fB23c210a079873CFfbB', ['function lock_solution(uint256, uint256) external', 'function ownerOf(uint256) external view returns (address)', 'function problems(uint256) external view returns (address)'], signer);
+        const contract = new window.ethers.Contract('0xC3a65484e3D59689B318fB23c210a079873CFfbB', ['function lock_solution(uint256, uint256) external', 'function ownerOf(uint256) external view returns (address)', 'function problems(uint256) external view returns (address)'], window.wallet.signer);
         const target = this.args.get('id');
         try {
             await contract.problems(target);
