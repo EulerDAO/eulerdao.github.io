@@ -12,8 +12,10 @@ class List {
                     const resp = await fetch(`https://eulerdao.github.io/problems/${v}.md`)
                     const text = await resp.text();
                     const title = text.split('\n')[0].substring(2);
+                    const a = document.createAttribute('a');
+                    a.innerText = `Problem ${v}: ${title}`;
                     const li = document.createElement('li');
-                    li.innerText = `Problem ${v}: ${title}`
+                    li.appendChild(a);
                     obj.appendChild(li);
                 });
         }
