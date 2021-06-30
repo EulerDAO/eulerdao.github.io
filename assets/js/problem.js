@@ -30,6 +30,7 @@ class Problem {
         }
         try {
             await contract.ownerOf(digest);
+            alert("solution has been submited")
             window.open(`/solution?id=${digest}`, '_blank');
             return;
         } catch {
