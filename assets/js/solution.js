@@ -5,28 +5,31 @@ class Solution {
     async render() {
         const digest = this.args.get('id');
         document.getElementById('bytecode').value = window.localStorage.getItem(digest);
-        const address = window.ethers.utils.keccak256(`0xff${'C3a65484e3D59689B318fB23c210a079873CFfbB'}0000000000000000000000000000000000000000000000000000000000000000${digest.substring(2)}`).substring(26);
-        console.log(address);
-        console.log('dest: 0xd9e54a4Cc4f7Ec4c8d325d2EFf53d6aA287EC00D');
-        return;
+        const payload = `0xff${'C3a65484e3D59689B318fB23c210a079873CFfbB'}0000000000000000000000000000000000000000000000000000000000000000${digest.substring(2)}`;
+        const address = `0x${window.ethers.utils.keccak256(payload).substring(26)}`;
         if (window.wallet.signer === null) {
             return;
         }
+        const ctx = {};
         const contract = new window.ethers.Contract('0xC3a65484e3D59689B318fB23c210a079873CFfbB', ['function targets(uint256) external view returns(uint256)', 'function scores(uint256) external view returns(uint256)', 'function timestamps(uint256) external view returns(uint256)', 'function challengers(uint256) external view returns(uint256)', 'function ownerOf(uint256) external view returns (address)'], window.wallet.signer);
         try {
-            this.target = await contract.targets(this.digest);
-            this.score = await contract.scores(this.digest);
-            this.timestamp = await contract.timestamps(this.digest);
-            this.challenger = await contract.challengers(this.digest);
-            this.owner = await contract.ownerOf(this.digest); // undefined if nft is not issued
-        } catch (e) { console.log('=========='); console.log(e) }
-        console.log('digest', this.digest);
-        console.log('target', this.target);
-        console.log('score', this.score);
-        console.log('timestamp', this.timestamp);
-        console.log('challenger', this.challenger);
-        console.log('address', this.address);
-        console.log('owner', this.owner);
+            ctx.target = await contract.targets(digest);
+        } catch { }
+        try {
+            ctx.score = await contract.scores(digest);
+        } catch { }
+        try {
+            ctx.timestamp = await contract.timestamps(digest);
+        } catch { }
+        try {
+            ctx.challenger = await contract.challengers(digest);
+        } catch { }
+        try {
+            ctx.owner = await contract.ownerOf(digest);
+        } catch { }
+
+        console.log(ctx);
+        return;
         if (await contract.provider.getCode(this.address) !== '0x') {
             this.deployed = true;
         }
