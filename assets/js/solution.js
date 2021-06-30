@@ -73,10 +73,13 @@ class Solution {
                 const chainid = await window.wallet.signer.getChainId();
                 const network = window.ethers.providers.getNetwork(chainid);
                 const h1 = document.createElement('h1');
-                h1.innerText = 'Solution is deployed!';
+                h1.style.textAlign = 'center';
+                h1.style.color = 'green';
+                h1.innerText = 'Solution Deployed';
                 document.getElementById('code').appendChild(h1);
                 const a = document.createElement('a');
                 a.innerText = address
+                a.style.textAlign = 'center';
                 a.href = `https://${network.name === 'homestead' ? '' : network.name + '.'}etherscan.io/address/${address}#code`
                 document.getElementById('code').appendChild(a);
                 break;
@@ -117,15 +120,6 @@ class Solution {
         const score = document.getElementById('score').value;
         console.log('owner', this.owner);
         await contract.compete(this.digest, score, { value: '2000000000000000000' });
-    }
-    async submit_code() {
-        const abi = [
-            'function submit_code(bytes memory code) external',
-        ]
-        const contract = new window.ethers.Contract(this.ed, abi, window.wallet.signer);
-        const bytecode = document.getElementById('bytecode').value;
-        //TODO verify hash is digest
-        await contract.submit_code(bytecode);
     }
     async lock() {
         const abi = [

@@ -1,6 +1,6 @@
 <div id="code">Loading ...</div>
-<hr>
 <a id='problem' style="display: block; text-align: center; visibility: hidden">Back to Problem</a>
+<hr>
 
 <div id='noenter' style="visibility: hidden">
     <h3  style="display: block; text-align: center">Not Entered</h3>
