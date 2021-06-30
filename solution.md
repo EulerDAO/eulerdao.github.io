@@ -1,5 +1,5 @@
 <div id="code">Loading ...</div>
-<a id='problem' style="display: block; text-align: center; visibility: hidden">Back to Problem</a>
+<a id='problem' style="display: block; text-align: center; visibility: hidden">Go to Problem</a>
 <hr>
 
 <div id='noenter' style="visibility: hidden">
