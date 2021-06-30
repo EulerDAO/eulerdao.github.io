@@ -9,8 +9,10 @@ class Solution {
         if (!window.wallet.signer) {
             return;
         }
+        const chainid = await window.wallet.signer.getChainId();
+        const network = window.ethers.providers.getNetwork(chainid);
         const ctx = {};
-        const contract = new window.ethers.Contract('0xC3a65484e3D59689B318fB23c210a079873CFfbB', ['function targets(uint256) external view returns(uint256)', 'function scores(uint256) external view returns(uint256)', 'function timestamps(uint256) external view returns(uint256)', 'function challengers(uint256) external view returns(address)', 'function ownerOf(uint256) external view returns (address)', 'function submit_code(bytes memory code) external'], window.wallet.signer);
+        const contract = new window.ethers.Contract('0xC3a65484e3D59689B318fB23c210a079873CFfbB', ['function revoke(uint256 id) external payable', 'function challenge(uint256 id, bytes calldata i) external payable', 'function lock_challenge(uint256 id) public payable', 'function targets(uint256) external view returns(uint256)', 'function compete(uint256 id, uint256 score) external payable', 'function scores(uint256) external view returns(uint256)', 'function timestamps(uint256) external view returns(uint256)', 'function challengers(uint256) external view returns(address)', 'function ownerOf(uint256) external view returns (address)', 'function submit_code(bytes memory code) external'], window.wallet.signer);
         try {
             ctx.target = await contract.targets(digest);
         } catch { }
@@ -18,25 +20,65 @@ class Solution {
             ctx.score = await contract.scores(digest);
         } catch { }
         try {
-            ctx.timestamp = await contract.timestamps(digest);
-        } catch { }
-        try {
-            ctx.challenger = await contract.challengers(digest);
-        } catch { }
-        try {
             ctx.owner = await contract.ownerOf(digest);
         } catch { }
         try {
             ctx.code = await contract.provider.getCode(address);
         } catch { }
+        try {
+            ctx.me = await window.wallet.signer.getAddress();
+        } catch { }
 
         if (ctx.owner === undefined) {
-            document.getElementById('code').innerText = 'Solution not Found';
+            document.getElementById('content').innerText = 'Solution not Found';
             return;
         }
 
-        document.getElementById('problem').href = `/problem?id=${ctx.target}`;
-        document.getElementById('problem').style.visibility = 'visible';
+        {
+            const code = document.createElement('code');
+            code.innerText = digest;
+            document.getElementById('id').innerHTML = '';
+            document.getElementById('id').appendChild(code);
+        }
+
+        if (ctx.score.eq(0)) {
+            if (ctx.owner === ctx.me) {
+                const input = document.createElement('input');
+                const button = document.createElement('button');
+                input.placeholder = 'input your score';
+                button.innerText = 'Compete';
+                button.onclick = async () => {
+                    const score = input.value;
+                    const val = window.ethers.BigNumber.from('100000000000').mul(window.ethers.BigNumber.from(input.value)).add(window.ethers.constants.WeiPerEther);
+                    const resp = await contract.compete(this.args.get('id'), score, { value: val.toString() });
+                    await resp.wait();
+                    window.location.reload();
+                };
+                document.getElementById('score').innerHTML = ``;
+                document.getElementById('score').appendChild(input);
+                document.getElementById('score').appendChild(button);
+            } else {
+                document.getElementById('score').innerText = `❌[NO SCORE]`;
+            }
+        } else {
+            document.getElementById('td-score').innerText = `✔️[${ctx.score}]`;
+        }
+        {
+            const a = document.createElement('a');
+            a.href = `/problem?id=${ctx.target}`;
+            a.innerText = `Problem ${ctx.target}`;
+            a.target = '_blank';
+            document.getElementById('problem').innerHTML = '';
+            document.getElementById('problem').appendChild(a);
+        }
+        {
+            const a = document.createElement('a');
+            a.href = `https://${network.name === 'homestead' ? '' : network.name + '.'}etherscan.io/address/${ctx.owner}`;
+            a.innerText = `${ctx.owner}`;
+            a.target = '_blank';
+            document.getElementById('owner').innerHTML = '';
+            document.getElementById('owner').appendChild(a);
+        }
 
         switch (ctx.code) {
             case '0x':
@@ -64,19 +106,12 @@ class Solution {
                     }
                     const resp = await contract.submit_code(bytecode);
                     await resp.wait();
-                    window.location.reload()
+                    window.location.reload();
                 };
                 document.getElementById('code').appendChild(button);
                 break;
             default:
                 document.getElementById('code').innerHTML = '';
-                const chainid = await window.wallet.signer.getChainId();
-                const network = window.ethers.providers.getNetwork(chainid);
-                const h1 = document.createElement('h1');
-                h1.style.textAlign = 'center';
-                h1.style.color = 'green';
-                h1.innerText = 'Solution Deployed';
-                document.getElementById('code').appendChild(h1);
                 const a = document.createElement('a');
                 a.innerText = address
                 a.style.textAlign = 'center';
@@ -85,63 +120,6 @@ class Solution {
                 document.getElementById('code').appendChild(a);
                 break;
         }
-
-        return;
-
-        // entered or not not entered
-        if (this.score == 0) {
-            document.getElementById('noenter').style.visibility = 'visible';
-            return;
-        }
-        document.getElementById('entered').style.visibility = 'visible';
-        document.getElementById('showscore').innerText = `Score: ${this.score}`
-
-        // has challenger or not
-        const thisAddr = await window.wallet.signer.getAddress();
-        if (!this.challenger.eq(window.ethers.BigNumber.from(thisAddr))) {
-            document.getElementById('lock').style.visibility = 'visible';
-            if (thisAddr === this.owner) {
-                document.getElementById('lock').innerText = 'prepare to revoke'
-            } else {
-                document.getElementById('lock').innerText = 'to be the challenger'
-            }
-        } else {
-            if (thisAddr == this.owner) {
-                document.getElementById('revoke').style.visibility = 'visible';
-            } else {
-                document.getElementById('challenge').style.visibility = 'visible';
-            }
-        }
-    }
-    async compete() {
-        const abi = [
-            'function compete(uint256 id, uint256 score) external payable',
-        ]
-        const contract = new window.ethers.Contract(this.ed, abi, window.wallet.signer);
-        const score = document.getElementById('score').value;
-        console.log('owner', this.owner);
-        await contract.compete(this.digest, score, { value: '2000000000000000000' });
-    }
-    async lock() {
-        const abi = [
-            'function lock_challenge(uint256 id) public payable',
-        ]
-        const contract = new window.ethers.Contract(this.ed, abi, window.wallet.signer);
-        await contract.lock_challenge(this.digest);
-    }
-    async challenge() {
-        const abi = [
-            'function challenge(uint256 id, bytes calldata i) external payable',
-        ]
-        const contract = new window.ethers.Contract(this.ed, abi, window.wallet.signer);
-        await contract.challenge(this.digest, '0x11');
-    }
-    async revoke() {
-        const abi = [
-            'function revoke(uint256 id) external payable ',
-        ]
-        const contract = new window.ethers.Contract(this.ed, abi, window.wallet.signer);
-        await contract.revoke(this.digest);
     }
 }
 
