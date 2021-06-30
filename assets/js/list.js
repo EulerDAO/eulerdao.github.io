@@ -13,6 +13,7 @@ class List {
                     const text = await resp.text();
                     const title = text.split('\n')[0].substring(2);
                     const a = document.createElement('a');
+                    a.href = `/problem?id=${v}`
                     a.innerText = `Problem ${v}: ${title}`;
                     const li = document.createElement('li');
                     li.appendChild(a);
